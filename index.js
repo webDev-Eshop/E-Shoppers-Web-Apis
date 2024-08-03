@@ -17,7 +17,7 @@ mongoose.connect("mongodb+srv://shoppers:GoShoppers@shop-1.zhoamnx.mongodb.net/s
         //app.use('/Category',productCategory)
         app.use('/api/Category',category)
         app.use('/api/SubCategory',subCategory)
-        console.log(`Server is running on port number ${port}`);
+        console.log(`Server is running on port number ${port} `);
         console.log(`Database connected succesfully`);
     })
 }).catch(err => {
