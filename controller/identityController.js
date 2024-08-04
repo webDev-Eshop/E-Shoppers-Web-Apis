@@ -1,3 +1,4 @@
+const { request, response } = require("express");
 const identityModel = require("../models/identityModel");
 const userModel = require("../models/userModel");
 const bcrypt = require("bcrypt");
@@ -101,18 +102,14 @@ exports.register = (request, response, next) => {
         });
 };
 exports.forgotPassword = (request, response, next) => {
-    const user = new loginModel();
-    console.log(request.body.password, " Password");
     identityModel.findOne({ email: request.body.email }).then((result) => {
             if (!result) {
                 return response.status(400).json({
                     message: "Email not found",
-                    data: result,
                 });
             } else {
                 bcrypt.genSalt(13, (err, salt) => {
                     bcrypt.hash(request.body.password, salt, (hashError, hash) => {
-                        console.log(hash, " hash Password");
                         if (hash) {
                             identityModel.updateOne(
                                 { _id: result._id },

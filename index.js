@@ -11,9 +11,11 @@ const login = require('./routes/login');
 const productCategory = require('./routes/productCategory');
 const category = require('./routes/category');
 const subCategory = require('./routes/subCategory');
+const user = require('./routes/user');
 mongoose.connect("mongodb+srv://shoppers:GoShoppers@shop-1.zhoamnx.mongodb.net/shop-1?retryWrites=true&w=majority").then(data => {
     app.listen(port, () => {
         app.use('/api', login);
+        app.use('/api/user', user);
         //app.use('/Category',productCategory)
         app.use('/api/Category',category)
         app.use('/api/SubCategory',subCategory)
