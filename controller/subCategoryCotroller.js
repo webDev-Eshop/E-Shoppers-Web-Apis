@@ -4,6 +4,7 @@ const { default: mongoose, isObjectIdOrHexString } = require("mongoose");
 
 // add update sub category
 exports.saveUpdateSubCategory = (request, response, next) => {
+    const dateTime = new Date();
     category.findById(request.body.CategoryId).then(data => {
         if (data != null) {
             if (request.body.id != null) {
@@ -11,7 +12,8 @@ exports.saveUpdateSubCategory = (request, response, next) => {
                     subCategoryModel.updateOne({ _id: request.body.id }, {
                         $set: {
                             SubCategoryName: request.body.SubCategoryName,
-                            CategoryId: request.body.CategoryId ? request.body.CategoryId : data.CategoryId
+                            CategoryId: request.body.CategoryId ? request.body.CategoryId : data.CategoryId,
+                            UpdatedOn: dateTime.toISOString().slice(0,10)
                         }
                     }).then((data) => {
                         if (data.modifiedCount) {
@@ -42,6 +44,8 @@ exports.saveUpdateSubCategory = (request, response, next) => {
                         const subCategoryData = new subCategoryModel();
                         subCategoryData.SubCategoryName = request.body.SubCategoryName.toLowerCase();
                         subCategoryData.CategoryId = request.body.CategoryId;
+                        subCategoryData.CreatedOn = dateTime.toISOString().slice(0,10);
+                        subCategoryData.UpdatedOn = null;
 
                         subCategoryData.save().then(data => {
                             return response.status(200).json({

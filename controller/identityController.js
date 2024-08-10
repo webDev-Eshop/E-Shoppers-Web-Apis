@@ -2,6 +2,7 @@ const { request, response } = require("express");
 const identityModel = require("../models/identityModel");
 const userModel = require("../models/userModel");
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 
 exports.signIn = (request, response, next) => {
     identityModel
@@ -17,9 +18,14 @@ exports.signIn = (request, response, next) => {
                 bcrypt.compare(request.body.password, data.password, (err, result) => {
                     if (result) {
                         userModel.findById({_id: data._id}).then(result=>{
+                                let payload = {subject: result._id};
+                                let expire_key = {expiresIn: '5h'};
+                                let algorithms = {algorithms: "ES512"};
+                                let token = jwt.sign(payload, process.env.SECRET_KEY, expire_key, algorithms);
                                 return response.status(200).json({
                                 message: "login Success",
                                 data: result,
+                                token: token
                             });
                         })
                     } else {

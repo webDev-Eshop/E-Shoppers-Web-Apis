@@ -2,8 +2,7 @@ const { request, response } = require("express");
 const userModel = require("../models/userModel");
 
 exports.GetUserById = (request, response, next) =>{
-    const userId = request.params.userId;
-    console.log(userId,'userId');
+    const userId = request.query.userId;
     if(userId != null){
         userModel.findById({_id: userId}).then((data)=>{
             return response.status(200).json({
@@ -19,7 +18,6 @@ exports.GetUserById = (request, response, next) =>{
 
 exports.UpdateUser = (request, response, next) =>{
     const userId = request.body.userId;
-    console.log(request.body)
     const userData = new userModel({
         firstName: request.body.firstName,
         lastName: request.body.lastName,
