@@ -97,7 +97,7 @@ exports.getAllSubCategory = (request, response, next) => {
 
 // get sub category by id
 exports.getSubCategoryById = (request, response, next) => {
-    subCategoryModel.findById({ _id: request.params.id }).then(data => {
+    subCategoryModel.findById({ _id: request.query.id }).then(data => {
         return response.status(200).json({
             result: data,
         })
@@ -111,8 +111,7 @@ exports.getSubCategoryById = (request, response, next) => {
 
 // get sub category by Category id
 exports.getSubCategoryByCategoryId = (request, response, next) => {
-    subCategoryModel.find({ CategoryId: request.params.categoryId }).populate('CategoryId').then(data => {
-        console.log(data)
+    subCategoryModel.find({ CategoryId: request.query.categoryId }).populate('CategoryId').then(data => {
         return response.status(200).json({
             result: data,
         })
