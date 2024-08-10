@@ -14,7 +14,7 @@ exports.getAllCategory = (request, response, next) => {
 
 // Get category by id
 exports.getCategoryById = (request, response, next) => {
-    categoryModel.findById(request.params.id).then(data=>{
+    categoryModel.findById(request.query.id).then(data=>{
         return response.status(201).json({
             result: data
         })
@@ -29,11 +29,12 @@ exports.getCategoryById = (request, response, next) => {
 // Save and update category type
 exports.saveUpdateCategory = (request, response, next) => {
     const category = new categoryModel();
-
-    if (request.params.id != null || request.params.id != undefined) {
-        categoryModel.updateOne({ _id: request.params.id },{
+    const dateTime = new Date();
+    if (request.query.id != null || request.query.id != undefined) {
+        categoryModel.updateOne({ _id: request.query.id },{
             $set:{
-                CategoryName: request.body.CategoryName
+                CategoryName: request.body.CategoryName,
+                UpdatedOn: dateTime.toISOString().slice(0,10)
             }
         }).then(data => {
             if(data.modifiedCount){
@@ -55,6 +56,8 @@ exports.saveUpdateCategory = (request, response, next) => {
         });
     } else {
         category.CategoryName = request.body.CategoryName;
+        category.CreatedOn = dateTime.toISOString().slice(0,10);
+        category.UpdatedOn = null;
         categoryModel.exists({CategoryName: request.body.CategoryName}).collation({locale: 'en', strength: 2}).then(data=>{
             if(data != null || data != undefined){
                 return response.status(201).json({
@@ -86,7 +89,7 @@ exports.saveUpdateCategory = (request, response, next) => {
 
 // delete category by id
 exports.deleteCategory = (request, response, next) => {
-    const categoryId = request.params.id;
+    const categoryId = request.query.id;
     categoryModel.deleteOne({_id: categoryId}).then(data=>{
         if(data.deletedCount){
             return response.status(201).json({

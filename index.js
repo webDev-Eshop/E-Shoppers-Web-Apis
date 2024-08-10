@@ -1,6 +1,7 @@
+require('dotenv').config();
 const express = require('express');
 const app = express();
-const port = process.env.port || 3000;
+const port = process.env.PORT;
 const bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({
     extended: false
@@ -12,7 +13,7 @@ const productCategory = require('./routes/productCategory');
 const category = require('./routes/category');
 const subCategory = require('./routes/subCategory');
 const user = require('./routes/user');
-mongoose.connect("mongodb+srv://shoppers:GoShoppers@shop-1.zhoamnx.mongodb.net/shop-1?retryWrites=true&w=majority").then(data => {
+mongoose.connect(process.env.MONGODB_STRING).then(data => {
     app.listen(port, () => {
         app.use('/api', login);
         app.use('/api/user', user);

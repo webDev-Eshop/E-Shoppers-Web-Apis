@@ -4,6 +4,12 @@ const CategorySchema = new mongoose.Schema({
         type: String,
         unique: true,
         required: true
+    },
+    CreatedOn:{
+        type: String
+    },
+    UpdatedOn: {
+        type: String
     }
 });
 
