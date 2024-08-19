@@ -1,4 +1,5 @@
 const categoryModel = require('../models/categoryModal');
+const identity = require('../controller/identityController');
 
 // Get all list of Category Type
 exports.getAllCategory = (request, response, next) => {
@@ -30,11 +31,12 @@ exports.getCategoryById = (request, response, next) => {
 exports.saveUpdateCategory = (request, response, next) => {
     const category = new categoryModel();
     const dateTime = new Date();
-    if (request.query.id != null || request.query.id != undefined) {
-        categoryModel.updateOne({ _id: request.query.id },{
+    if (request.body.id != null || request.body.id != undefined) {
+        categoryModel.updateOne({ _id: request.body.id },{
             $set:{
                 CategoryName: request.body.CategoryName,
-                UpdatedOn: dateTime.toISOString().slice(0,10)
+                UpdatedOn: dateTime.toISOString().slice(0,10),
+                UpdatedBy: global.userLoggedInId
             }
         }).then(data => {
             if(data.modifiedCount){
@@ -58,6 +60,9 @@ exports.saveUpdateCategory = (request, response, next) => {
         category.CategoryName = request.body.CategoryName;
         category.CreatedOn = dateTime.toISOString().slice(0,10);
         category.UpdatedOn = null;
+        category.CreatedBy = global.userLoggedInId;
+        category.UpdatedBy = null;
+        
         categoryModel.exists({CategoryName: request.body.CategoryName}).collation({locale: 'en', strength: 2}).then(data=>{
             if(data != null || data != undefined){
                 return response.status(201).json({
