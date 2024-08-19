@@ -18,6 +18,8 @@ exports.signIn = (request, response, next) => {
                 bcrypt.compare(request.body.password, data.password, (err, result) => {
                     if (result) {
                         userModel.findById({_id: data._id}).then(result=>{
+                                global.userLoggedInId = data._id;
+                                console.log(global.userLoggedInId, "User Id")
                                 let payload = {subject: result._id};
                                 let expire_key = {expiresIn: '5h'};
                                 let algorithms = {algorithms: "ES512"};

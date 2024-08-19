@@ -5,6 +5,12 @@ const CategorySchema = new mongoose.Schema({
         unique: true,
         required: true
     },
+    CreatedBy:{
+        type: String
+    },
+    UpdatedBy:{
+        type: String
+    },
     CreatedOn:{
         type: String
     },

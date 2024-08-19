@@ -13,10 +13,12 @@ exports.saveUpdateSubCategory = (request, response, next) => {
                         $set: {
                             SubCategoryName: request.body.SubCategoryName,
                             CategoryId: request.body.CategoryId ? request.body.CategoryId : data.CategoryId,
-                            UpdatedOn: dateTime.toISOString().slice(0,10)
+                            UpdatedOn: dateTime.toISOString().slice(0,10),
+                            UpdatedBy: global.userLoggedInId
                         }
                     }).then((data) => {
                         if (data.modifiedCount) {
+
                             return response.status(200).json({
                                 message: "Sub category successfully updated"
                             })
@@ -46,6 +48,8 @@ exports.saveUpdateSubCategory = (request, response, next) => {
                         subCategoryData.CategoryId = request.body.CategoryId;
                         subCategoryData.CreatedOn = dateTime.toISOString().slice(0,10);
                         subCategoryData.UpdatedOn = null;
+                        subCategoryData.CreatedBy = global.userLoggedInId;
+                        subCategoryData.UpdatedBy = null;
 
                         subCategoryData.save().then(data => {
                             return response.status(200).json({
@@ -89,7 +93,7 @@ exports.getAllSubCategory = (request, response, next) => {
         return response.status(201).json({ result: data });
     }).catch(error => {
         return response.status(500).json({
-            message: "Something wrong",
+            message: "Something went wrong",
             error: error
         })
     });

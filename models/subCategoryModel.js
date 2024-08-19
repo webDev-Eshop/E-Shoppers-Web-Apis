@@ -11,6 +11,12 @@ const subCategorySchema = new mongoose.Schema({
         ref: 'Category',
         required: true
     },
+    CreatedBy:{
+        type: String
+    },
+    UpdatedBy:{
+        type: String
+    },
     CreatedOn:{
         type: String,
     },
