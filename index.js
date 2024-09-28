@@ -3,9 +3,11 @@ const express = require('express');
 const app = express();
 const port = process.env.PORT;
 const bodyParser = require('body-parser');
+const cors = require('cors');
 app.use(bodyParser.urlencoded({
     extended: false
 }));
+app.use(cors());
 app.use(bodyParser.json());
 const mongoose = require('mongoose');
 const login = require('./routes/login');
